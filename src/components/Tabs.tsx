@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Button, View, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 import { LayoutProps, TabContainerComponent } from 'super-layouts/dist/layouts/RouteAwareLayout';
 import { Toolbar, toolbarStyles } from './Toolbar';
 
@@ -38,7 +39,9 @@ export const Tabs: React.FC<TabUiProps> = ({ activeKey, layouts, onChange, layou
                         style={toolbarStyles.button}
                     >
                         <Button
-                            color={selectedTabKey === item.layoutKey ? 'yellow' : undefined}
+                            buttonStyle={{ borderRadius: 0 }}
+                            type="outline"
+                            raised={selectedTabKey === item.layoutKey}
                             onPress={() => {
                                 setTabKey(item.layoutKey);
                                 if (onChange) {

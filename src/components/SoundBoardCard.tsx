@@ -1,17 +1,16 @@
 import React from 'react';
-import { Button, View, Text } from 'react-native';
+import { Card, Button } from 'react-native-elements'
 
 const SoundBoardCard: React.FC<{
   entity: { title: string; };
   onDrilldown: () => void;
 }> = ({ onDrilldown, entity}) => (
-  <View>
-    <Text>{entity.title}</Text>
+  <Card title={entity.title}>
     <Button
       title="View"
       onPress={onDrilldown}
     />
-  </View>
+  </Card>
 );
 
 export default SoundBoardCard;
