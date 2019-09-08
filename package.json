@@ -17,7 +17,7 @@
     "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.1",
     "shortid": "^2.2.14",
-    "super-layouts": "^1.4.0"
+    "super-layouts": "^1.4.1"
   },
   "devDependencies": {
     "@types/react": "^16.8.19",

@@ -6,6 +6,8 @@ import SoundBoardCard from '../../components/SoundBoardCard';
 import SoundBoardService from '../../services/SoundBoardService';
 import { SoundBoard } from '../../domain';
 
+const getCardKey = (soundboard: SoundBoard): string  => soundboard.id;
+
 const PreviewPanel: React.FC<{
     entity?: { title: string };
     togglePanel: () => void;
@@ -34,6 +36,7 @@ type Props = {
 const HomeView: React.FC<Props> = ({ boards }) => (
     boards.length ? (
     <CardDrilldownLayout
+        getCardKey={getCardKey}
         PreviewPanel={PreviewPanel}
         Card={SoundBoardCard}
         MainContentLayout={View}
