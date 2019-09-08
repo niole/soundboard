@@ -1,13 +1,24 @@
 import React from 'react';
-import { TextInput, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Button as ElementButton, Text, Card, ListItem, Input as TextInput } from 'react-native-elements';
 import SoundBoardService from '../../services/SoundBoardService';
-import { ValidatedForm } from '../../components/ValidatedForm';
-import { Tabs } from '../../components/Tabs';
-import { AdaptedButton as Button } from '../../components/AdaptedButton';
+import {
+    ValidatedForm,
+    Tabs,
+    Section,
+    Container,
+} from '../../components';
+import { Props as AdaptedButtonProps, AdaptedButton as Button } from '../../components/AdaptedButton';
 import { Toolbar, toolbarStyles } from '../../components/Toolbar';
 import AudioRecorder from './AudioRecorder';
 import { AudioSampleAddForm } from './AudioSampleAddForm';
 import { Audio } from './types';
+
+const SubmitSoundboardButton: React.FC<AdaptedButtonProps> = props => (
+    <Section>
+        <ElementButton onPress={props.onClick} title={props.children} />
+    </Section>
+);
 
 const handleAddAudio = (currentUrls: Audio[], onChange: (urls: Audio[]) => void) => async (newAudio: Audio) => {
     onChange([...currentUrls, newAudio]);
@@ -31,74 +42,85 @@ export type Props = {
 };
 
 const CreateView: React.FC<Props> = ({ creatorId }) => (
-    <ValidatedForm
-        inputs={[
-            [{
-                key: 'soundBoardName',
-                validator: (value: string) => !value ? 'Please provide a name for your soundboard' : undefined,
-                Input: ({
-                    onChange,
-                    value,
-                }) => (
-                    <TextInput
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder="Name your soundboard"
-                    />
-                ),
-            }], [{
-                key: 'soundUrls',
-                validator: (soundUrls: Audio[]) => !soundUrls.length ? 'Please add sounds' : undefined,
-                Input: ({
-                    onChange,
-                    value,
-                }) => (
-                    <View>
-                        <Tabs
-                            activeKey="record"
-                            layoutProps={{}}
-                            layouts={[{
-                                layoutKey: 'record',
-                                View: () => (
-                                    <AudioSampleAddForm
-                                        onAddAudio={handleAddAudio(value, onChange)}
-                                        SoundGetterComponent={recordingAddProps => (
-                                            <AudioRecorder
-                                                onChange={recordingAddProps.onChange}
-                                                value={recordingAddProps.value}
-                                            />
-                                        )}
-                                    />
-                                ),
-                                title: 'Record',
-                            }, {
-                                layoutKey: 'upload',
-                                View: () => (
-                                    <AudioSampleAddForm
-                                        onAddAudio={handleAddAudio(value, onChange)}
-                                        SoundGetterComponent={recordingAddProps => (
-                                            <Text>upload please</Text>
-                                        )}
-                                    />
-                                ),
-                                title: 'Upload',
-                            }]}
+    <Container>
+        <ValidatedForm
+            inputs={[
+                [{
+                    key: 'soundBoardName',
+                    validator: (value: string) => !value ? 'Please provide a name for your soundboard' : undefined,
+                        Input: ({
+                        onChange,
+                        value,
+                    }) => (
+                    <Section>
+                        <TextInput
+                            label="Soundboard Name"
+                            onChangeText={onChange}
+                            value={value}
+                            placeholder="Name your new soundboard"
                         />
-                        {value.map(({ title, location }) => (
-                            <View key={title}>
-                                <Text>{title}</Text>
-                                <Text>{location}</Text>
-                            </View>
-                        ))}
-                    </View>
-                ),
-            }]
-        ]}
-        submitLabel="Create Soundboard"
-        onSubmit={onSubmit(creatorId)}
-        defaultValues={{ soundUrls: [] }}
-        hideCancel={true}
-    />
+                    </Section>
+                    ),
+                }], [{
+                    key: 'soundUrls',
+                    validator: (soundUrls: Audio[]) => !soundUrls.length ? 'Please add sounds' : undefined,
+                        Input: ({
+                        onChange,
+                        value,
+                    }) => (
+                    <Section>
+                        <>
+                            <Tabs
+                                activeKey="record"
+                                layoutProps={{}}
+                                layouts={[{
+                                    layoutKey: 'record',
+                                    View: () => (
+                                        <AudioSampleAddForm
+                                            onAddAudio={handleAddAudio(value, onChange)}
+                                            SoundGetterComponent={recordingAddProps => (
+                                                <AudioRecorder
+                                                    onChange={recordingAddProps.onChange}
+                                                    value={recordingAddProps.value}
+                                                />
+                                                )}
+                                            />
+                                            ),
+                                            title: 'Record',
+                                }, {
+                                    layoutKey: 'upload',
+                                    View: () => (
+                                        <AudioSampleAddForm
+                                            onAddAudio={handleAddAudio(value, onChange)}
+                                            SoundGetterComponent={recordingAddProps => (
+                                                <Text>upload please</Text>
+                                            )}
+                                        />
+                                        ),
+                                        title: 'Upload',
+                                }]}
+                            />
+                            {value.map(({ title, location }) => (
+                                <ListItem
+                                    key={title}
+                                    title={title}
+                                    subtitle={location}
+                                    bottomDivider={true}
+                                />
+                            ))}
+                        </>
+                    </Section>
+                    ),
+                }]
+            ]}
+            submitLabel="Create Soundboard"
+            onSubmit={onSubmit(creatorId)}
+            CustomSubmitButton={SubmitSoundboardButton}
+            CustomActionBar={View}
+            defaultValues={{ soundUrls: [] }}
+            hideCancel={true}
+        />
+    </Container>
 );
 
 export default CreateView;

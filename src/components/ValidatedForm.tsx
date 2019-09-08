@@ -9,19 +9,26 @@ export type Props<Values> = {
   onSubmit: BaseProps<Values>['onSubmit'];
   onCancel: BaseProps<Values>['onCancel'];
   defaultValues: BaseProps<Values>['defaultValues'];
+  CustomSubmitButton?: BaseProps<Values>['SubmitButton'];
+  CustomActionBar?: BaseProps<Values>['ActionBar'];
 };
 
 export class ValidatedForm<Values> extends React.PureComponent<Props<Values>> {
   render() {
+    const {
+      CustomSubmitButton = AdaptedButton,
+      CustomActionBar = Toolbar,
+      ...rest
+    } = this.props;
     return (
       <BaseValidatedForm
         ActionsContainer={View}
-        SubmitButton={AdaptedButton}
+        SubmitButton={CustomSubmitButton}
         CancelButton={AdaptedButton}
         Text={Text}
         View={View}
-        ActionBar={Toolbar}
-        {...this.props}
+        ActionBar={CustomActionBar}
+        {...rest}
       />
       );
   }

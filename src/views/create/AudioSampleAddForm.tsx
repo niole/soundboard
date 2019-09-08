@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { TextInput, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text, Input as TextInput } from 'react-native-elements';
 import { GeneralComponent } from 'super-layouts/dist/types';
-import { ValidatedForm, PluggableInput } from '../../components/ValidatedForm';
-import { AdaptedButton as Button } from '../../components/AdaptedButton';
+import {
+    Section,
+    ValidatedForm,
+    PluggableInput,
+    AdaptedButton as Button,
+} from '../../components';
 import { Audio } from './types';
 
 type AllValues = {
@@ -25,11 +30,14 @@ export const AudioSampleAddForm: React.FC<Props> = ({
                 key: 'title',
                 validator: (value: string) => !value ? 'Please provide a title' : undefined,
                 Input: ({ onChange, value }) => (
-                    <TextInput
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder="Name your sound byte"
-                    />
+                    <Section>
+                        <TextInput
+                            label="New Sound Title"
+                            onChangeText={onChange}
+                            value={value}
+                            placeholder="Name your sound byte"
+                        />
+                    </Section>
                 ),
             }], [{
                 key: 'location',
